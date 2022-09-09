@@ -23,22 +23,7 @@ int main(){
 
     printLL(odds);
     printLL(evens);
-    first = NULL;
     printLL(first);
-    //std::cout<<"hi"<<std::endl;
-
-    // Node* head = NULL;
-    // Node* second = NULL;
-    // Node* third = NULL;
-
-    // head = new Node();
-    // second = new Node();
-    // head -> value = 1;
-    // head -> next = second;
-    // second -> value = 2;
-    // second ->next = third;
-    // third -> value = 3;
-    // third->next = NULL;
     
 
 
