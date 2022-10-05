@@ -41,9 +41,9 @@ void ULListStr::push_back(const std::string& val){
     Item* newNode = new Item;
     Item* temp = tail_;
     tail_ = newNode;
+    //pushing to the front of the new list
+    tail_->last= 0;
     tail_->prev = temp;
-    tail_->last= 1;
-    //delete temp; -> causes valgrind error
     tail_ -> val[tail_->last] = val;
   }else{
     //add val onto the next item
@@ -60,7 +60,6 @@ void ULListStr::push_front(const std::string& val){
    head_= newNode;
    tail_= newNode;
    head_ -> val[head_->first]=val;
-   //head_->first=10;
    head_->last++;
  }else if(head_->first==0){
    //need a temp variable to store the pointer of the next Node
@@ -68,9 +67,9 @@ void ULListStr::push_front(const std::string& val){
    Item* temp = head_;
    head_ = newNode;
    head_->next=temp;
-   head_->last=10;
+   //pushing into the back of the new list
+   head_->last= 10;
    head_->first = 9;
-   //delete temp;
    head_->val[head_->first]=val;
  }else{
    //add val onto the node before it
@@ -84,17 +83,32 @@ void ULListStr::push_front(const std::string& val){
 void ULListStr::pop_front(){
   if(empty()){
     return;
-  } else{
+  } 
+  else if((tail_->last-tail_->first) < 1){
+    //delete the whole node if there is only one item
+    Item* newNode = head_;
+    head_ = head_->next;
+    delete newNode;
+    size_--;
+  }else{
     //move first pointer to the next position
     head_->first= head_->first+1;
     size_--;
-}
+  }
 }
 
 void ULListStr::pop_back(){
   if(empty()){
     return;
-  } else{
+  } 
+  //delete the whole node if there is only one item
+  //size_ gave me memory errors, but tail_->last-tail_->first does?
+  else if((tail_->last-tail_->first) < 1){
+    Item* newNode = tail_;
+    tail_ = tail_->prev;
+    delete newNode;
+    size_--;
+  }else{
     //move last pointer to the one behind it
     tail_->last= tail_->last-1;
     size_--;
@@ -115,8 +129,8 @@ std::string* ULListStr::getValAtLoc(size_t loc) const{
     return NULL;
   }
   Item* temp = head_;
-  while(size_<=loc){
-    loc-=size_;
+  while((temp->last-temp->first)<=loc){
+    loc-=temp->last-temp->first;
     temp = temp->next;
   }
   return &temp->val[temp->first+loc];
